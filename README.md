@@ -1,4 +1,4 @@
-## クラプロ在庫確認アプリ
+## 在庫確認アプリ
 
 `Next.js + Vercel + Supabase` を前提にした新しい実装基盤です。
 既存の `FastAPI + SQLite` 試作は [../src](/c:/Projects/kurapuro/src) に残し、この `web` ディレクトリを今後の本体として育てます。
