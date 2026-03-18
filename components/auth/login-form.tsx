@@ -56,8 +56,12 @@ export function LoginForm({
       await clearBrowserState();
 
       if (isActive) {
-        window.history.replaceState({}, "", "/login");
-        setMessage("ログイン状態をリセットしました。");
+        window.history.replaceState(
+          {},
+          "",
+          `/login?next=${encodeURIComponent(nextPath)}`,
+        );
+        setMessage("ログイン状態をリセットしました。もう一度 Google でログインしてください。");
       }
     }
 
@@ -66,7 +70,7 @@ export function LoginForm({
     return () => {
       isActive = false;
     };
-  }, [resetSession]);
+  }, [nextPath, resetSession]);
 
   async function signInWithGoogle() {
     setIsSubmitting(true);
@@ -116,7 +120,7 @@ export function LoginForm({
           onClick={signInWithGoogle}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "移動中..." : "Googleでログイン"}
+          {isSubmitting ? "処理中..." : "Googleでログイン"}
         </button>
 
         {message ? <p className={styles.message}>{message}</p> : null}

@@ -6,9 +6,22 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { sanitizeNextPath } from "@/lib/utils/navigation";
 
 const PENDING_APPROVAL_MESSAGE =
-  "このアカウントは承認待ちです。管理者の承認後にご利用ください。";
+  "このアカウントは承認待ちです。管理者の承認後に利用してください。";
 const DELETED_ACCOUNT_MESSAGE =
   "このアカウントは利用停止中です。管理者に連絡してください。";
+const MISSING_CODE_MESSAGE =
+  "認証コードが見つかりませんでした。もう一度ログインしてください。";
+const LOGIN_FAILED_MESSAGE = "ログインに失敗しました。";
+const PROFILE_FETCH_FAILED_MESSAGE =
+  "ユーザー情報の確認に失敗しました。時間をおいて再度お試しください。";
+const PROFILE_UPSERT_FAILED_MESSAGE =
+  "プロフィール更新に失敗しました。時間をおいて再度お試しください。";
+const PKCE_RESET_MESSAGE =
+  "ログイン状態をリセットしました。もう一度 Google でログインしてください。";
+
+function isPkceStorageError(message: string | null | undefined) {
+  return Boolean(message?.includes("PKCE code verifier not found in storage"));
+}
 
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
@@ -31,7 +44,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `/auth/error?message=${encodeURIComponent(
-          "認証コードが見つかりませんでした。もう一度ログインしてください。",
+          MISSING_CODE_MESSAGE,
         )}&next=${encodeURIComponent(next)}`,
         origin,
       ),
@@ -42,6 +55,19 @@ export async function GET(request: NextRequest) {
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error || !data.user) {
+    if (isPkceStorageError(error?.message)) {
+      await supabase.auth.signOut();
+
+      return NextResponse.redirect(
+        new URL(
+          `/login?reset=1&message=${encodeURIComponent(
+            PKCE_RESET_MESSAGE,
+          )}&next=${encodeURIComponent(next)}`,
+          origin,
+        ),
+      );
+    }
+
     await writeAuditLogSafe({
       action: "auth.access_denied",
       resourceType: "auth",
@@ -57,7 +83,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `/auth/error?message=${encodeURIComponent(
-          error?.message ?? "ログインに失敗しました。",
+          error?.message ?? LOGIN_FAILED_MESSAGE,
         )}&next=${encodeURIComponent(next)}`,
         origin,
       ),
@@ -142,7 +168,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `/auth/error?message=${encodeURIComponent(
-          "ユーザー情報の確認に失敗しました。もう一度お試しください。",
+          PROFILE_FETCH_FAILED_MESSAGE,
         )}&next=${encodeURIComponent(next)}`,
         origin,
       ),
@@ -198,7 +224,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `/auth/error?message=${encodeURIComponent(
-          "プロフィール更新に失敗しました。時間をおいて再度お試しください。",
+          PROFILE_UPSERT_FAILED_MESSAGE,
         )}&next=${encodeURIComponent(next)}`,
         origin,
       ),
