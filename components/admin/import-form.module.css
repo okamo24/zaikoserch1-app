@@ -1,0 +1,50 @@
+.form {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 28px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  color: var(--foreground-muted);
+  font-weight: 600;
+}
+
+.field input {
+  font: inherit;
+}
+
+.button {
+  min-height: 52px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.result {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--primary-softer);
+  color: var(--foreground-muted);
+  line-height: 1.7;
+  white-space: pre-wrap;
+}

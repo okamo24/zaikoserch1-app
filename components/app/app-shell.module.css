@@ -1,0 +1,255 @@
+.shell {
+  min-height: 100vh;
+  background: transparent;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.84);
+  border-bottom: 1px solid var(--line);
+}
+
+.headerInner {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  padding: 12px 16px;
+}
+
+.mobileBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.menuButton {
+  display: inline-grid;
+  gap: 4px;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--surface-strong), var(--primary-softer));
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.menuButton:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-strong);
+}
+
+.menuButton span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--primary-strong);
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease,
+    width 0.22s ease;
+}
+
+.menuButton span:nth-child(2) {
+  width: 14px;
+}
+
+.menuButton span:nth-child(3) {
+  width: 18px;
+}
+
+.menuButton[data-open="true"] span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menuButton[data-open="true"] span:nth-child(2) {
+  opacity: 0;
+  width: 0;
+}
+
+.menuButton[data-open="true"] span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.mobileBrand {
+  flex: 1;
+  min-width: 0;
+}
+
+.mobileBrand a {
+  display: block;
+  color: var(--foreground);
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.mobileSpacer {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+}
+
+.desktopBar {
+  display: none;
+}
+
+.brand {
+  display: grid;
+  gap: 4px;
+}
+
+.brand a {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--foreground);
+}
+
+.brand span {
+  font-size: 0.9rem;
+  color: var(--foreground-muted);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--foreground-muted);
+  font-weight: 600;
+}
+
+.nav a[data-active="true"] {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+.logout {
+  background: var(--primary);
+  color: #fff !important;
+}
+
+.drawerBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: rgba(23, 54, 93, 0.24);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.drawerBackdrop[data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  width: min(82vw, 320px);
+  height: 100vh;
+  padding: 22px 18px 28px;
+  background: rgba(255, 255, 255, 0.98);
+  border-right: 1px solid var(--line);
+  box-shadow: 24px 0 48px rgba(47, 111, 221, 0.16);
+  transform: translateX(-102%);
+  transition: transform 0.24s ease;
+}
+
+.drawer[data-open="true"] {
+  transform: translateX(0);
+}
+
+.drawerHeader {
+  display: grid;
+  gap: 6px;
+}
+
+.drawerTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--foreground);
+}
+
+.drawerEmail {
+  color: var(--foreground-muted);
+  word-break: break-all;
+}
+
+.drawerNav {
+  display: grid;
+  gap: 8px;
+}
+
+.drawerNav a {
+  padding: 14px 16px;
+  border-radius: 16px;
+  color: var(--foreground-muted);
+  font-weight: 700;
+}
+
+.drawerNav a[data-active="true"] {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+.drawerLogout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border-radius: 16px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+.main {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  padding: 16px 16px 40px;
+}
+
+@media (min-width: 900px) {
+  .headerInner {
+    padding: 16px 20px;
+  }
+
+  .mobileBar,
+  .drawer,
+  .drawerBackdrop {
+    display: none;
+  }
+
+  .desktopBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .main {
+    padding: 24px 20px 48px;
+  }
+}

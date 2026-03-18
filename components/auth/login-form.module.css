@@ -1,0 +1,104 @@
+.card {
+  width: min(100%, 520px);
+  padding: 32px 28px;
+  border-radius: 32px;
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 20px 70px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.header {
+  display: grid;
+  gap: 12px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #2b6cb0;
+}
+
+.header h1 {
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  line-height: 1.1;
+  color: #102a43;
+}
+
+.description {
+  color: #486581;
+  line-height: 1.8;
+}
+
+.actions {
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 52px;
+  border: 0;
+  border-radius: 18px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: linear-gradient(135deg, #2b6cb0, #1f4f82);
+  color: #fff;
+}
+
+.secondaryButton {
+  background: #eef5fb;
+  color: #1f4f82;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #829ab1;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: rgba(130, 154, 177, 0.3);
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  color: #334e68;
+  font-weight: 600;
+}
+
+.field input {
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid rgba(43, 108, 176, 0.16);
+  border-radius: 18px;
+  background: #fff;
+  font: inherit;
+}
+
+.message {
+  border-radius: 18px;
+  background: #f8fbfe;
+  padding: 14px 16px;
+  color: #486581;
+  line-height: 1.7;
+}

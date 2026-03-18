@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## クラプロ在庫確認アプリ
 
-## Getting Started
+`Next.js + Vercel + Supabase` を前提にした新しい実装基盤です。
+既存の `FastAPI + SQLite` 試作は [../src](/c:/Projects/kurapuro/src) に残し、この `web` ディレクトリを今後の本体として育てます。
 
-First, run the development server:
+## 前提
+- Node.js LTS
+- npm
+- Supabase プロジェクト
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+PowerShell の実行ポリシーで `npm.ps1` が止まる場合は、`npm.cmd` を使います。
+
+## 開発コマンド
+
+```powershell
+npm.cmd install
+npm.cmd run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+PWA の HTTPS テストが必要な場合:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```powershell
+npm.cmd run dev:https
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+開発サーバー起動後、`http://localhost:3000` を開きます。
 
-## Learn More
+## 直近の実装順
+1. Supabase 接続
+2. ログイン画面
+3. `inventory_items` / `import_logs` / `profiles` テーブル作成
+4. CSV取込管理画面
+5. 検索API
+6. チャットUI
 
-To learn more about Next.js, take a look at the following resources:
+## 環境変数
+`.env.example` をコピーして `.env.local` を作成し、Supabase の値を入れます。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+AUTH_ALLOWED_EMAILS=allowed1@example.com,allowed2@example.com
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+設定確認:
 
-## Deploy on Vercel
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\check-setup.ps1
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## デプロイ
+Vercel へ接続すれば、Next.js アプリとしてそのままデプロイできます。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Supabase
+- SQL は [supabase/migrations/202603120001_initial_app.sql](/c:/Projects/kurapuro/web/supabase/migrations/202603120001_initial_app.sql) を実行
+- Google Provider の Redirect URL には `/auth/callback` を登録
+- 最初の管理者は `profiles.role = 'admin'` に更新
+
+## PWA メモ
+- `app/manifest.ts` で Web App Manifest を生成
+- `public/icon.svg` と `public/apple-icon.svg` を暫定アイコンとして利用
+- 端末追加の最終調整は、認証と主要画面実装後に行う
